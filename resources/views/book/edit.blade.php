@@ -30,21 +30,20 @@
     <div class="content mx-5">
         <div class="container-fluid"
             style="background-color:white; border-style:solid;border-color:black;border-width:1px;border-radius:8px;border-color:#B2BEB5;">
-            <form style="margin:12px 12px;">
-
+            <form action="{{ route('book.update', $book->id) }}" method="post" enctype="multipart/form-data"
+                style="margin:12px 12px;">
+                @csrf
+                @method("PUT")
                 <div class="mb-3">
                     <label for="image" class="form-label">Image</label>
                     <input type="file" class="form-control" id="image" name="image" aria-describedby="imageHelp">
-                    @error('image')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
                 </div>
 
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
                     <input type="text" placeholder="Masukkan Title" class="form-control" id="title" name="title">
                     @error('title')
-                        <span class="text-danger">{{ $message }}</span>
+                        <div class="text-danger">{{ $message }}</div>
                     @enderror
                 </div>
 
@@ -56,16 +55,16 @@
                 <div class="row1 mb-3" style="display:flex; width:100%;">
                     <input type="text" placeholder="Masukkan Author" class="form-control mr-4" id="author"
                         name="author">
+                    <br>
                     @error('author')
-                        <span class="text-danger">{{ $message }}</span>
+                        <div class="text-danger">{{ $message }}</div>
                     @enderror
-
                     <input type="text" placeholder="Masukkan Pages" class="form-control" id="pages" name="pages">
+                    <hr>
                     @error('pages')
-                        <span class="text-danger">{{ $message }}</span>
+                        <div class="text-danger">{{ $message }}</div>
                     @enderror
                 </div>
-
                 <button type="submit" class="btn btn-primary">Edit</button>
             </form>
         </div>

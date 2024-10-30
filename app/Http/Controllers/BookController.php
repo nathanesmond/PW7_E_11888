@@ -3,6 +3,8 @@ namespace App\Http\Controllers;
 use Exception;
 use Illuminate\Http\Request;
 use App\Models\Book;
+use Illuminate\Support\Facades\Storage;
+
 class BookController extends Controller
 {
     /**
@@ -38,19 +40,19 @@ class BookController extends Controller
             'title' => 'required',
             'author' => 'required',
             'pages' => 'required|integer',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,jfif'
         ]);
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('image', 'public');
-        }
 
-        //Fungsi Simpan Data ke dalam Database
+        $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
+        $request->file('image')->move(public_path('image'), $imageName);
+        $imagePath = 'image/' . $imageName;
+
         Book::create([
             'title' => $request->title,
             'author' => $request->author,
             'pages' => $request->pages,
             'image' => $imagePath,
+            // 'image' => $imagePath,
         ]);
         try {
             return redirect()->route('book.index');
@@ -79,22 +81,38 @@ class BookController extends Controller
     public function update(Request $request, $id)
     {
         $book = Book::find($id);
-        //validate form
-        $this->validate($request, [
+        if (!$book) {
+            return redirect()->route('book.index')->withErrors(['error' => 'Book not found.']);
+        }
+
+        $request->validate([
             'title' => 'required',
             'author' => 'required',
-            'pages' => 'required'
+            'pages' => 'required|integer',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,jfif'
         ]);
-        $book->update([
-            'title' => $request->title,
-            'author' => $request->author,
-            'pages' => $request->pages
-        ]);
+
+        if ($request->hasFile('image')) {
+            if ($book->image) {
+                Storage::delete($book->image);
+            }
+
+            $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('image'), $imageName);
+            $imagePath = 'image/' . $imageName;
+            $book->image = $imagePath;
+        }
+
+        $book->title = $request->title;
+        $book->author = $request->author;
+        $book->pages = $request->pages;
+        $book->save();
+
         return redirect()->route('book.index')->with([
-            'success' => 'Data
-Berhasil Diubah!'
+            'success' => 'Data Berhasil Diubah!'
         ]);
     }
+
     /**
      * destroy
      *

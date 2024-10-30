@@ -17,5 +17,8 @@ Route::get('/', function () {
 });
 Route::resource('/book', BookController::class);
 Route::post('/book', [BookController::class, 'store'])->name('book.store');
+Route::post('/book/{id}', [BookController::class, 'update'])->name('book.update');
 
 Route::resource('/bookings', BookingsController::class);
+Route::post('/bookings', [BookingsController::class, 'store'])->name('bookings.store');
+Route::put('/bookings/{id}', [BookingsController::class, 'update'])->name('bookings.update');

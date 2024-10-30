@@ -29,22 +29,39 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
+                        <a href="{{ route('bookings.create') }}" class="btn btnmd btn-success
+                    mb-3">Tambah Bookings</a>
                         <div class="table-responsive p-0">
                             <table class="table table-hover text-no-wrap">
                                 <thead>
                                     <tr>
+                                        <th class="text-center">Poster</th>
                                         <th class="text-center">Title</th>
                                         <th class="text-center">Class</th>
                                         <th class="text-center">Price</th>
+                                        <th class="text-center">Aksi</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @forelse ($bookings as $item)
                                         <tr>
-                                            <td class="text-center">{{$item->book->title
-                                            }}</td>
-                                            <td class="text-center">{{$item->class }}</td>
-                                            <td class="text-center">{{$item->price }}</td>
+                                        <td class="text-center align-middle">
+                                        <img src="./{{$item->book->image}}" alt="" style="width:150px;height:200px;">
+                                            <td class="text-center align-middle">{{$item->book->title}}</td>
+                                            <td class="text-center align-middle">{{$item->class }}</td>
+                                            <td class="text-center align-middle">{{$item->price }}</td>
+                                            <td class="text-center align-middle">
+                                                    <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ route('book.destroy', $item->id)}}"
+                                                        method="POST">
+                                                        <a href="{{route('book.edit', $item->id)
+                                                                    }}" class="btn btn-sm btn-primary">EDIT</a>
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm
+                                                                    btn-danger">Hapus</button>
+                                                    </form>
+                                                </td>
                                         </tr>
                                     @empty
                                         <div class="alert alert-danger">

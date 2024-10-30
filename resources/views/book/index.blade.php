@@ -45,19 +45,14 @@ mb-3">Tambah Buku</a>
                                 <tbody>
                                     @forelse ($book as $item)
                                         <tr>
-                                            <td class="text-center">
-                                             @if ($post->image)
-                                                <img src="{{ asset('storage/'.$post->image)}}" alt="Post image" class="img-thumbnail me-3" style="width: 100px; height: 100px;">
-                                            @else
-                                                 <img src="https://via.placeholder.com/100" alt="Default Image" class="img-thumbnail me-3" style="width: 100px; height: 100px;">
-                                            @endif
-                                            </td>
-                                            <td class="text-center">{{ $item->title
+                                            <td class="text-center align-middle">
+                                             <img src="./{{$item->image}}" alt="" style="width:150px;height:200px;">
+                                            <td class="text-center align-middle">{{ $item->title
                                                                 }}</td>
-                                            <td class="text-center">{{ $item->author
+                                            <td class="text-center align-middle">{{ $item->author
                                                                 }}</td>
-                                            <td class="text-center">{{ $item->page}}</td>
-                                            <td class="text-center">
+                                            <td class="text-center align-middle">{{ $item->pages}}</td>
+                                            <td class="text-center align-middle">
                                                 <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ route('book.destroy', $item->id)}}"
                                                     method="POST">
                                                     <a href="{{route('book.edit', $item->id)
