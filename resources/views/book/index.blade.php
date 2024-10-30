@@ -35,6 +35,7 @@ mb-3">Tambah Buku</a>
                             <table class="table table-hover textnowrap">
                                 <thead>
                                     <tr>
+                                        <th class="text-center">Image</th>
                                         <th class="text-center">Title</th>
                                         <th class="text-center">Author</th>
                                         <th class="textcenter">Page</th>
@@ -44,6 +45,13 @@ mb-3">Tambah Buku</a>
                                 <tbody>
                                     @forelse ($book as $item)
                                         <tr>
+                                            <td class="text-center">
+                                             @if ($post->image)
+                                                <img src="{{ asset('storage/'.$post->image)}}" alt="Post image" class="img-thumbnail me-3" style="width: 100px; height: 100px;">
+                                            @else
+                                                 <img src="https://via.placeholder.com/100" alt="Default Image" class="img-thumbnail me-3" style="width: 100px; height: 100px;">
+                                            @endif
+                                            </td>
                                             <td class="text-center">{{ $item->title
                                                                 }}</td>
                                             <td class="text-center">{{ $item->author

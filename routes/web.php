@@ -16,4 +16,6 @@ Route::get('/', function () {
     return view('dashboard');
 });
 Route::resource('/book', BookController::class);
+Route::post('/book', [BookController::class, 'store'])->name('book.store');
+
 Route::resource('/bookings', BookingsController::class);

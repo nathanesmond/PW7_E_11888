@@ -34,17 +34,23 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //Validasi Formulir
-        $this->validate($request, [
+        $request->validate([
             'title' => 'required',
             'author' => 'required',
-            'pages' => 'required'
+            'pages' => 'required|integer',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('image', 'public');
+        }
+
         //Fungsi Simpan Data ke dalam Database
         Book::create([
             'title' => $request->title,
             'author' => $request->author,
-            'pages' => $request->pages
+            'pages' => $request->pages,
+            'image' => $imagePath,
         ]);
         try {
             return redirect()->route('book.index');

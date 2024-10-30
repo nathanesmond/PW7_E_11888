@@ -11,6 +11,8 @@ class Bookings extends Model
         'id_book',
         'class',
         'price',
+        'image'
+
     ];
 
     public function book()
